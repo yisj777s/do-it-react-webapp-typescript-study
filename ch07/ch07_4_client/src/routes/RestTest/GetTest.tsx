@@ -1,23 +1,26 @@
 import {useState, useCallback} from 'react'
 import {Button} from '../../theme/daisyui'
 import {get} from '../../server'
+import {useAuth} from '../../contexts'
 
 export default function GetTest() {
+  const {jwt} = useAuth()
+
   const [data, setData] = useState<object>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const getAllTest = useCallback(() => {
-    get('/test')
+    get('/test', jwt)
       .then(res => res.json())
       .then(data => setData(data))
       .catch(error => setErrorMessage(error.message))
-  }, [])
+  }, [jwt])
   const getTest = useCallback(() => {
-    get('/test/1234')
+    get('/test/1234', jwt)
       .then(res => res.json())
       .then(data => setData(data))
       .catch(error => setErrorMessage(error.message))
-  }, [])
+  }, [jwt])
 
   return (
     <div className="mb-4">
